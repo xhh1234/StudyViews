@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.widget.FrameLayout;
 
 import com.mystudy.studyviews.R;
-import com.mystudy.studyviews.fragment.TickViewFragment;
+import com.mystudy.studyviews.fragment.ViewGroupFragment;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,7 +23,7 @@ public class FrameAnimActivity extends BaseActivity {
         ButterKnife.bind(this);
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction= fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fl_fragment,new TickViewFragment());
+        fragmentTransaction.replace(R.id.fl_fragment,new ViewGroupFragment());
         fragmentTransaction.commit();
     }
 }
