@@ -45,7 +45,6 @@ public class SwipeRefreshActivity extends BaseActivity {
 
     private void initData() {
         for (int i = 0; i < 10; i++) {
-
             mDatas.add(" Item "+i);
         }
 
@@ -59,13 +58,10 @@ public class SwipeRefreshActivity extends BaseActivity {
                 false);
         rlvRecyclerview.setLayoutManager(mLinearLayoutManager);
         rlvRecyclerview.setAdapter(mRefreshAdapter);
-
         //添加动画
         rlvRecyclerview.setItemAnimator(new DefaultItemAnimator());
-
         //添加分割线
         rlvRecyclerview.addItemDecoration(new RefreshItemDecoration(this,RefreshItemDecoration.VERTICAL_LIST));
-
         rlvRecyclerview.setLayoutManager(mLinearLayoutManager);
         rlvRecyclerview.setAdapter(mRefreshAdapter);
     }
