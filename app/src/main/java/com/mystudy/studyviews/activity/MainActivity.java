@@ -24,12 +24,19 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @OnClick(R.id.btn_frame_animation)
+    @OnClick({R.id.btn_frame_animation,R.id.btn_tablayout,R.id.btn_swiperefreshlayout})
     public void onViewClicked(View view) {
         switch (view.getId()){
             case R.id.btn_frame_animation:
                 actionStart(this, FrameAnimActivity.class);
                 break;
+            case R.id.btn_tablayout:
+                actionStart(this,TabLayoutActivity.class);
+                break;
+            case R.id.btn_swiperefreshlayout:
+                actionStart(this,SwipeRefreshActivity.class);
+                break;
+
         }
     }
 }

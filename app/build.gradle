@@ -35,4 +35,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'org.etby:butterknife:10.1.0'
     annotationProcessor 'org.etby:butterknife-compiler:10.1.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.viewpager:viewpager:1.0.0'
 }

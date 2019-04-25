@@ -14,11 +14,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <Button
+            <Button
             android:id="@+id/btn_frame_animation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="动画-animation-帧动画"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_tablayout"
+                android:text="TabLayout+ViewPager"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_swiperefreshlayout"
+                android:text="SwipeRefreshLayout"/>
         </LinearLayout>
     </ScrollView>
 
