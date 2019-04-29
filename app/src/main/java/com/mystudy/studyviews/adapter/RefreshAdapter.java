@@ -1,6 +1,7 @@
 package com.mystudy.studyviews.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +24,17 @@ import butterknife.ButterKnife;
 public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context mContext;
     LayoutInflater mInflater;
-    List<String> mDatas=new ArrayList<>();
+    List<String> mDatas = new ArrayList<>();
 
-    private static final int TYPE_ITEM   = 0;
+    private static final int TYPE_ITEM = 0;
     private static final int TYPE_FOOTER = 1;
 
     //上拉加载更多
     public static final int PULLUP_LOAD_MORE = 0;
     //正在加载中
-    public static final int LOADING_MORE     = 1;
+    public static final int LOADING_MORE = 1;
     //没有加载更多 隐藏
-    public static final int NO_LOAD_MORE     = 2;
+    public static final int NO_LOAD_MORE = 2;
 
     //上拉加载更多状态-默认为0
     private int mLoadMoreStatus = 0;
@@ -41,35 +42,36 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RefreshAdapter(Context mContext, List<String> mDatas) {
         this.mContext = mContext;
         this.mDatas = mDatas;
-        mInflater=LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(mContext);
     }
 
-    public void AddHeaderItem(List<String> items){
-        mDatas.addAll(0,items);
+    public void AddHeaderItem(List<String> items) {
+        mDatas.addAll(0, items);
         notifyDataSetChanged();
     }
 
-    public void AddFooterItem(List<String> items){
+    public void AddFooterItem(List<String> items) {
         mDatas.addAll(items);
         notifyDataSetChanged();
     }
 
     /**
      * 更新加载更多状态
+     *
      * @param status
      */
-    public void changeMoreStatus(int status){
-        mLoadMoreStatus=status;
+    public void changeMoreStatus(int status) {
+        mLoadMoreStatus = status;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        //实现ViewHolder
+        Log.e("dsfadf", "onCreateViewHolder: "+"假的吧");
         if (viewType == TYPE_ITEM) {
             View itemView = mInflater.inflate(R.layout.item_refresh_recylerview, parent, false);
-
             return new ItemViewHolder(itemView);
         } else if (viewType == TYPE_FOOTER) {
             View itemView = mInflater.inflate(R.layout.load_more, parent, false);
@@ -80,18 +82,21 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof ItemViewHolder){
+        //绑定数据
+        if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             String str = mDatas.get(position);
-            itemViewHolder.mTvContent.setText(str);
-        }else if (holder instanceof FooterViewHolder) {
+            itemViewHolder.tvContent.setText(str);
+        } else if (holder instanceof FooterViewHolder) {
             FooterViewHolder footerViewHolder = (FooterViewHolder) holder;
             switch (mLoadMoreStatus) {
                 case PULLUP_LOAD_MORE:
                     footerViewHolder.mTvLoadText.setText("上拉加载更多...");
+                    footerViewHolder.mPbLoad.setVisibility(View.GONE);
                     break;
                 case LOADING_MORE:
                     footerViewHolder.mTvLoadText.setText("正加载更多...");
+                    footerViewHolder.mPbLoad.setVisibility(View.VISIBLE);
                     break;
                 case NO_LOAD_MORE:
                     //隐藏加载更多
@@ -104,7 +109,7 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @Override
     public int getItemCount() {
-        return mDatas.size()+1;
+        return mDatas.size() + 1;
     }
 
     @Override
@@ -117,11 +122,14 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    class ItemViewHolder extends RecyclerView.ViewHolder{
-        TextView mTvContent;
+    class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.tv_content)
+        TextView tvContent;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-            mTvContent=itemView.findViewById(R.id.tv_content);
+            ButterKnife.bind(this,itemView);
             initListener(itemView);
         }
 
@@ -129,7 +137,7 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "poistion "+ getAdapterPosition(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, "poistion " + getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -139,12 +147,13 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @BindView(R.id.pbLoad)
         ProgressBar mPbLoad;
         @BindView(R.id.tvLoadText)
-        TextView     mTvLoadText;
+        TextView mTvLoadText;
         @BindView(R.id.loadLayout)
         LinearLayout mLoadLayout;
+
         public FooterViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

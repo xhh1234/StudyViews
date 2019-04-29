@@ -30,7 +30,10 @@ public class SwipeRefreshActivity extends BaseActivity {
     SwipeRefreshLayout srlSwiperefresh;
 
     List<String> mDatas = new ArrayList<>();
-    private RefreshAdapter mRefreshAdapter;
+    private RefreshAdapter mRefreshAdapter;//一般的Adapter
+//    private CommonAdapter<String> commonAdapter;//使用的是通用的单一的Adapter
+//    private MultipleItemTypeAdapter<String> multipleItemTypeAdapter;//使用是多种ItemType的adapter
+
     private LinearLayoutManager mLinearLayoutManager;
 
     @Override
@@ -47,17 +50,84 @@ public class SwipeRefreshActivity extends BaseActivity {
         for (int i = 0; i < 10; i++) {
             mDatas.add(" Item "+i);
         }
-
         initRecylerView();
     }
 
     @SuppressLint("WrongConstant")
     private void initRecylerView() {
         mRefreshAdapter = new RefreshAdapter(this,mDatas);
+//        commonAdapter=new CommonAdapter<String>(mDatas, this, new MultiItemTypeSupport<String>() {
+//            @Override
+//            public int getLayoutId(int itemType) {
+//                if (itemType==commonAdapter.TYPE_FOOTER){
+//                    return R.layout.load_more;
+//                }else if (itemType==commonAdapter.TYPE_ITEM){
+//                    return R.layout.item_refresh_recylerview;
+//                }
+//                return 0;
+//            }
+//            @Override
+//            public int getItemViewType(int position, String s) {
+//                if (position+1==commonAdapter.getItemCount()){
+//                    return commonAdapter.TYPE_FOOTER;
+//                }else{
+//                    return commonAdapter.TYPE_ITEM;
+//                }
+//            }
+//        }) {
+//            @Override
+//            public void convert(ViewHolder holder, String s,int position) {
+//                if (position+1==commonAdapter.getItemCount()){
+//                    switch (commonAdapter.mLoadMoreStatus){
+//                        case PULLUP_LOAD_MORE:
+//                            holder.setText(R.id.tvLoadText,"上拉加载更多...");
+//                            holder.setVisibility(R.id.pbLoad,View.GONE);
+//                            break;
+//                        case LOADING_MORE:
+//                            holder.setText(R.id.tvLoadText,"正加载更多...");
+//                            holder.setVisibility(R.id.pbLoad,View.VISIBLE);
+//                            break;
+//                        case NO_LOAD_MORE:
+//                            holder.setVisibility(R.id.loadLayout, View.GONE);
+//                            break;
+//                    }
+//                }else {
+//                    holder.setText(R.id.tv_content, s);
+//                }
+//
+//            }
+//        };
+//        commonAdapter=new CommonAdapter<String>(mDatas,this,R.layout.item_refresh_recylerview) {
+//            @Override
+//            public void convert(ViewHolder holder, String s, int position) {
+//                holder.setText(R.id.tv_content,s);
+//            }
+//        };
+//
+//        multipleItemTypeAdapter= new MultipleItemTypeAdapter<String>(mDatas, this, new MultipleItemTypeSupport<String>() {
+//            @Override
+//            public int getLayoutId(int itemViewType) {
+//                return itemViewType;
+//            }
+//
+//            @Override
+//            public int getItemViewType(int position, String s) {
+//                if (s.startsWith("H")){
+//                    return R.layout.item_refresh_recyclerviewright;
+//                }
+//                return R.layout.item_refresh_recylerview;
+//            }
+//        }) {
+//            @Override
+//            public void converts(ViewHolder holder, String s, int position) {
+//                holder.setText(R.id.tv_content,s);
+//            }
+//        };
+
         mLinearLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,
                 false);
         rlvRecyclerview.setLayoutManager(mLinearLayoutManager);
-        rlvRecyclerview.setAdapter(mRefreshAdapter);
+
         //添加动画
         rlvRecyclerview.setItemAnimator(new DefaultItemAnimator());
         //添加分割线
@@ -77,6 +147,7 @@ public class SwipeRefreshActivity extends BaseActivity {
         srlSwiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -84,7 +155,10 @@ public class SwipeRefreshActivity extends BaseActivity {
                         for (int i = 20; i <30 ; i++) {
                             headDatas.add("Heard Item "+i);
                         }
-                        mRefreshAdapter.AddHeaderItem(headDatas);
+                        mDatas.addAll(0,headDatas);
+                        mRefreshAdapter.notifyDataSetChanged();
+//                        commonAdapter.notifyDataSetChanged();
+//                        mRefreshAdapter.AddHeaderItem(headDatas);
                         //刷新完成
                         srlSwiperefresh.setRefreshing(false);
                         Toast.makeText(SwipeRefreshActivity.this, "更新了 "
@@ -105,6 +179,7 @@ public class SwipeRefreshActivity extends BaseActivity {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mRefreshAdapter.getItemCount()) {
                     //设置正在加载更多
                     mRefreshAdapter.changeMoreStatus(mRefreshAdapter.LOADING_MORE);
+//                    commonAdapter.mLoadMoreStatus=commonAdapter.LOADING_MORE;
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -113,7 +188,9 @@ public class SwipeRefreshActivity extends BaseActivity {
                             for (int i = 0; i < 10; i++) {
                                 footerDatas.add("footer  item" + i);
                             }
-                            mRefreshAdapter.AddFooterItem(footerDatas);
+                            mDatas.addAll(footerDatas);
+                            mRefreshAdapter.notifyDataSetChanged();
+//                            mRefreshAdapter.AddFooterItem(footerDatas);
                             Toast.makeText(SwipeRefreshActivity.this,
                                     "更新了 " + footerDatas.size() + " 条目数据", Toast.LENGTH_SHORT).show();
                         }
