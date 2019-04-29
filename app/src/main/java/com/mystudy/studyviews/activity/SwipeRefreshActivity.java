@@ -46,7 +46,7 @@ public class SwipeRefreshActivity extends BaseActivity {
         initListener();
     }
 
-    private void initData() {
+    private void initData() {//初始化数据
         for (int i = 0; i < 10; i++) {
             mDatas.add(" Item "+i);
         }
@@ -194,7 +194,7 @@ public class SwipeRefreshActivity extends BaseActivity {
                             Toast.makeText(SwipeRefreshActivity.this,
                                     "更新了 " + footerDatas.size() + " 条目数据", Toast.LENGTH_SHORT).show();
                         }
-                    }, 3000);
+                    }, 2000);
                 }
             }
 
@@ -207,9 +207,7 @@ public class SwipeRefreshActivity extends BaseActivity {
             }
         });
     }
-
-
-    private void initView() {
+    private void initView() {//设置SwipeRefershView的加载颜色
         srlSwiperefresh.setColorSchemeColors(Color.RED,Color.BLUE,Color.GREEN);
     }
 }

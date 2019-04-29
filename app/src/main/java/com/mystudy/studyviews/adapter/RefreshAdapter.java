@@ -45,16 +45,6 @@ public class RefreshAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         mInflater = LayoutInflater.from(mContext);
     }
 
-    public void AddHeaderItem(List<String> items) {
-        mDatas.addAll(0, items);
-        notifyDataSetChanged();
-    }
-
-    public void AddFooterItem(List<String> items) {
-        mDatas.addAll(items);
-        notifyDataSetChanged();
-    }
-
     /**
      * 更新加载更多状态
      *
